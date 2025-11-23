@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>ある日の食卓・BACON</title>
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        /* 呼吸动画样式 */
+        .breath {
+            animation: breath 3s ease-in-out infinite;
+        }
+
+        @keyframes breath {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        /* 红色闪烁文字样式 */
+        .red-flash-text {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: red;
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            z-index: 9999;
+            user-select: none;
+            pointer-events: none;
+            animation: flash 1.5s ease forwards;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* 排版混乱样式 */
+        .chaos {
+            position: relative;
+            animation: chaosMove 4s infinite;
+        }
+
+        @keyframes chaosMove {
+            0% {
+                top: 0;
+                left: 0;
+                transform: rotate(0deg);
+            }
+
+            25% {
+                top: 5px;
+                left: -5px;
+                transform: rotate(5deg);
+            }
+
+            50% {
+                top: -5px;
+                left: 5px;
+                transform: rotate(-5deg);
+            }
+
+            75% {
+                top: 5px;
+                left: 5px;
+                transform: rotate(3deg);
+            }
+
+            100% {
+                top: 0;
+                left: 0;
+                transform: rotate(0deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <header class="header">
+            <h1>ある日の食卓・BACON</h1>
+            <div class="mainvisual">
+                <img src="images/top.jpg" alt="カレー">
+            </div>
+        </header><!-- header -->
+
+        <div class="contents-wrapper">
+            <main class="main-contents">
+                <article class="content">
+                    <h2>豆腐と鶏肉ご飯</h2>
+                    <img src="images/shokutaku01.jpg" alt="豆腐と鶏肉ご飯">
+                    <p>食材がイイ！ってな感じで、美味しくできました～</p>
+                </article>
+                <article class="content">
+                    <h2>ハンバーグ、パスタ、プリン</h2>
+                    <img id="img2" src="images/shokutaku02.jpg" alt="鮭とエビのムンステールソースのコキアージュパスタの写真">
+                    <p>熟成されたチーズならではの旨味がソースにとけ込み、満点レベル～。</p>
+                </article>
+                <article class="content">
+                    <h2>パン、野菜サラダ、ハムソーセージ</h2>
+                    <img id="img3" src="images/shokutaku03.jpg" alt="スズキと菜花といちじくのマリネの写真">
+                    <p>これはとても美味しい朝ごはんです。</p>
+                </article>
+            </main><!-- /main -->
+
+            <aside class="aside-contents">
+                <h3>食へのこだわり</h3>
+                <ul>
+                    <li>野菜</li>
+                    <li>鶏肉</li>
+                    <li>プリンとその他のデザート</li>
+                </ul>
+                <h3>美味しいものランキング</h3>
+                <ol>
+                    <li>アイスクリーム</li>
+                    <li>プリン</li>
+                    <li>寮給食</li>
+                </ol>
+            </aside><!-- /aside -->
+        </div><!-- /contents-wrapper -->
+
+        <footer class="footer">
+            <small>ある日の食卓・BACON <br>Copyright KOIZUMI</small>
+        </footer><!-- /footer -->
+    </div><!-- /wrapper -->
+
+    <script>
+        // 第一次滑入 img2，显示“助けて”，只触发一次
+        let img2Hovered = false;
+        
+        document.getElementById("img2").addEventListener("mouseenter", function () {
+            if (img2Hovered) return;
+            img2Hovered = true;
+
+            const flashText = document.createElement("div");
+            flashText.className = "red-flash-text";
+            flashText.textContent = "助けて";
+
+            document.body.appendChild(flashText);
+
+            setTimeout(() => {
+                flashText.remove();
+            }, 1500);
+        });
+
+        // img3滑入计数，3次后进入深蓝3D模式
+        let img3HoverCount = 0;
+        const maxTriggers = 3;
+        const warnings = ["逃げて", "警告", "見えてるよ"];
+        let allowWarningFlash = true; // 控制逃げて闪烁是否继续
+
+        document.getElementById("img3").addEventListener("mouseenter", function () {
+            if (img3HoverCount >= maxTriggers) return;
+
+            img3HoverCount++;
+
+            const text = document.createElement("div");
+            text.className = "red-flash-text";
+            text.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+
+            document.body.appendChild(text);
+
+            setTimeout(() => {
+                text.remove();
+            }, 1500);
+
+            if (img3HoverCount === maxTriggers) {
+                setTimeout(() => {
+                    triggerDarkMode();
+                }, 1500);
+            }
+        });
+
+        // 触发深蓝3D模式
+        function triggerDarkMode() {
+            // 改变背景
+            document.body.style.background = "#001f3f";
+            document.querySelector(".footer").style.background = "#001f3f";
+            document.body.classList.add("darkmode");
+            document.querySelector('.wrapper').classList.add('dark-background');
+
+            // 进入裸眼3D模式时，让所有图片加上黑白滤镜
+            document.querySelectorAll('img').forEach(img => {
+            img.classList.add('grayscale');
+            });
+
+
+
+
+            // 全部文字变红色带蓝阴影（裸眼3D效果）
+            document.querySelectorAll("*").forEach(el => {
+                if (el.nodeType === 1 && el.tagName !== "SCRIPT" && el.tagName !== "STYLE") {
+                    el.style.color = "red";
+                    el.style.textShadow = "2px 2px 0 blue";
+                }
+            });
+
+            // header 图片叠加黑色遮罩及红蓝文字
+            const headerImage = document.querySelector(".mainvisual");
+            headerImage.style.position = "relative";
+
+            const blackOverlay = document.createElement("div");
+            blackOverlay.style.position = "absolute";
+            blackOverlay.style.top = "0";
+            blackOverlay.style.left = "0";
+            blackOverlay.style.width = "100%";
+            blackOverlay.style.height = "100%";
+            blackOverlay.style.backgroundColor = "black";
+            blackOverlay.style.zIndex = "10";
+            headerImage.appendChild(blackOverlay);
+
+            const redText = document.createElement("div");
+            redText.textContent = "一緒に食べようか？";
+            redText.style.position = "absolute";
+            redText.style.top = "30%";
+            redText.style.width = "100%";
+            redText.style.textAlign = "center";
+            redText.style.color = "red";
+            redText.style.fontSize = "32px";
+            redText.style.zIndex = "11";
+            headerImage.appendChild(redText);
+
+            const blueText = document.createElement("div");
+            blueText.textContent = "答えないで";
+            blueText.style.position = "absolute";
+            blueText.style.top = "55%";
+            blueText.style.width = "100%";
+            blueText.style.textAlign = "center";
+            blueText.style.color = "blue";
+            blueText.style.fontSize = "24px";
+            blueText.style.filter = "blur(1px)";
+            blueText.style.zIndex = "11";
+            headerImage.appendChild(blueText);
+
+            addBreathAnimation();
+
+            startEscapeFlash();
+
+            // 16秒后开始恐怖结尾序列
+            setTimeout(() => {
+                stopEscapeFlash();
+                startCreepySequence();
+            }, 16000);
+        }
+
+        // 呼吸动画添加函数
+        function addBreathAnimation() {
+            document.querySelectorAll("h1, h2, p").forEach(el => {
+                el.classList.add("breath");
+            });
+        }
+
+        // “逃げて”闪现循环控制
+        let flashInterval;
+        function startEscapeFlash() {
+            allowWarningFlash = true;
+            flashInterval = setInterval(() => {
+                if (!allowWarningFlash) return;
+                const flash = document.createElement("div");
+                flash.className = "red-flash-text";
+                flash.textContent = "逃げて";
+                document.body.appendChild(flash);
+                setTimeout(() => flash.remove(), 1500);
+            }, 15000);
+        }
+
+        function stopEscapeFlash() {
+            allowWarningFlash = false;
+            if (flashInterval) clearInterval(flashInterval);
+        }
+
+        // 恐怖结尾序列相关函数
+        let effectStarted = false;
+
+        function startCreepySequence() {
+            if (effectStarted) return;
+            effectStarted = true;
+            triggerCreepFinale();
+        }
+
+        // 逐字替换所有目标文本为“見つけたよ”
+        function graduallyReplaceText() {
+            const targets = document.querySelectorAll('p, h1, h2, h3, span');
+            targets.forEach(target => {
+                const newText = '見つけたよ';
+                let index = 0;
+                const interval = setInterval(() => {
+                    if (index < newText.length) {
+                        target.textContent = newText.slice(0, index + 1);
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 10);
+            });
+        }
+
+        // 激活排版混乱效果
+        function activateChaos() {
+            const all = document.querySelectorAll('p, h1, h2, h3, span');
+            all.forEach(el => el.classList.add('chaos'));
+        }
+
+        // 清空页面，黑屏
+        function blackout() {
+            document.body.innerHTML = '';
+            document.body.style.background = 'black';
+        }
+
+        // 显示红色巨大文字“見つけたよ~”，逐字出现，结束后3秒变红屏
+        function showRedMessage() {
+            const msg = "見つけたよ~";
+            const container = document.createElement('div');
+            container.style.position = 'fixed';
+            container.style.top = '50%';
+            container.style.left = '50%';
+            container.style.transform = 'translate(-50%, -50%)';
+            container.style.color = 'red';
+            container.style.fontSize = '10vw';
+            container.style.fontWeight = 'bold';
+            container.style.zIndex = '999999';
+            container.style.whiteSpace = 'pre';
+            document.body.appendChild(container);
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < msg.length) {
+                    container.textContent += msg[i++];
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.body.style.background = 'red';
+                    }, 3000);
+                }
+            }, 500);
+        }
+
+        // 最终黑屏并清空内容
+        function finalBlackout() {
+            setTimeout(() => {
+                document.body.style.background = 'black';
+                document.body.innerHTML = '';
+            }, 5000);
+        }
+
+        // 恐怖结尾流程总控
+        function triggerCreepFinale() {
+            graduallyReplaceText(); // 文字变成“見つけたよ”
+            setTimeout(activateChaos, 4000); // 4秒后排版混乱
+            setTimeout(blackout, 20000); // 20秒后黑屏
+            setTimeout(showRedMessage, 15000); // 14秒后显示红字
+            setTimeout(finalBlackout, 23000); // 30秒后最终黑屏
+        }
+    </script>
+    
+</body>
+
+</html>
